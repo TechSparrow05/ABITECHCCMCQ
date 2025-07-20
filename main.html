@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABI TECH - Cloud Computing MCQ</title>
+    <style>
+        /* ========== CSS STYLES ========== */
+        :root {
+            --primary-purple: #7B4397;
+            --secondary-purple: #DC2430;
+            --gradient: linear-gradient(135deg, #7B4397 0%, #DC2430 100%);
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --light-purple: #F3E5F5;
+            --dark-gray: #333333;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --error: #F44336;
+            --shadow: 0 5px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 30px rgba(123, 67, 151, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 25px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Screen Management */
+        .screen {
+            display: none;
+            min-height: calc(100vh - 100px);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Unit Selection Styles */
+        #unitSelection {
+            padding: 50px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--primary-purple);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        .units-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .unit-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .unit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .unit-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .unit-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .unit-number {
+            font-size: 4rem;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0.15;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .unit-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+            color: var(--dark-gray);
+            font-weight: 700;
+        }
+
+        .unit-card p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .questions-count {
+            display: inline-flex;
+            align-items: center;
+            background: var(--light-purple);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: var(--primary-purple);
+            font-weight: 600;
+        }
+
+        .questions-count::before {
+            content: '📝';
+            margin-right: 8px;
+        }
+
+        /* Quiz Screen Styles */
+        .quiz-header {
+            background: var(--white);
+            border-bottom: 2px solid var(--light-gray);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .quiz-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .quiz-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .unit-name {
+            font-weight: 700;
+            color: var(--primary-purple);
+            font-size: 1.2rem;
+        }
+
+        .question-counter {
+            font-size: 0.95rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .timer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--light-gray);
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .timer-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .timer.warning {
+            background: #FFF3CD;
+            color: var(--warning);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        /* Quiz Content */
+        .quiz-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            padding: 40px 0;
+        }
+
+        .question-panel {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        #questionText {
+            font-size: 1.4rem;
+            margin-bottom: 35px;
+            color: var(--dark-gray);
+            line-height: 1.8;
+            font-weight: 500;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .option {
+            background: var(--light-gray);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .option:hover {
+            background: #F0F0F0;
+            border-color: var(--primary-purple);
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: var(--light-purple);
+            border-color: var(--primary-purple);
+        }
+
+        .option-label {
+            width: 45px;
+            height: 45px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--primary-purple);
+            font-size: 1.1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .option.selected .option-label {
+            background: var(--gradient);
+            color: var(--white);
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 1.05rem;
+        }
+
+        /* Navigation Buttons */
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 14px 35px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(123, 67, 151, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .btn-secondary:hover {
+            background: #E0E0E0;
+        }
+
+        /* Question Palette */
+        .question-palette {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .question-palette h4 {
+            margin-bottom: 25px;
+            color: var(--primary-purple);
+            font-size: 1.2rem;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .palette-item {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .palette-item.unanswered {
+            background: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .palette-item.answered {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .palette-item.current {
+            background: var(--gradient);
+            color: var(--white);
+            transform: scale(1.15);
+            box-shadow: 0 4px 15px rgba(123, 67, 151, 0.4);
+        }
+
+        .palette-item:hover:not(.current) {
+            transform: scale(1.1);
+        }
+
+        /* Palette Legend */
+        .palette-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-top: 25px;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .palette-legend div {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+        }
+
+        .legend-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 6px;
+        }
+
+        .legend-dot.answered {
+            background: var(--success);
+        }
+
+        .legend-dot.current {
+            background: var(--gradient);
+        }
+
+        .legend-dot.unanswered {
+            background: var(--light-gray);
+        }
+
+        /* Quiz Footer */
+        .quiz-footer {
+            background: var(--white);
+            border-top: 2px solid var(--light-gray);
+            padding: 25px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+        }
+
+        .btn-submit {
+            background: var(--success);
+            color: var(--white);
+            padding: 16px 60px;
+            font-size: 1.1rem;
+            border-radius: 30px;
+        }
+
+        .btn-submit:hover {
+            background: #45A049;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Results Screen */
+        .results-container {
+            max-width: 800px;
+            padding: 50px 0;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .results-header h2 {
+            font-size: 3rem;
+            color: var(--primary-purple);
+            margin-bottom: 40px;
+        }
+
+        .score-circle {
+            width: 220px;
+            height: 220px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 15px 40px rgba(123, 67, 151, 0.3);
+            position: relative;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            border-radius: 50%;
+            background: var(--gradient);
+            opacity: 0.3;
+            filter: blur(20px);
+        }
+
+        .score-value {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--white);
+            position: relative;
+            z-index: 1;
+        }
+
+        .score-label {
+            font-size: 1.3rem;
+            color: var(--white);
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 35px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h4 {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .results-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .units-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .quiz-content {
+                grid-template-columns: 1fr;
+            }
+
+            .question-palette {
+                position: static;
+                margin-top: 30px;
+            }
+
+            .palette-grid {
+                grid-template-columns: repeat(10, 1fr);
+            }
+
+            .results-stats {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .navigation-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .quiz-footer {
+                padding: 20px;
+            }
+
+            .btn-submit {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .results-header h2 {
+                font-size: 2rem;
+            }
+
+            .score-circle {
+                width: 180px;
+                height: 180px;
+            }
+
+            .score-value {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">ABI TECH</h1>
+            <p class="tagline">Cloud Computing Excellence</p>
+        </div>
+    </header>
+
+    <!-- Unit Selection Screen -->
+    <div id="unitSelection" class="screen active">
+        <div class="container">
+            <h2 class="section-title">Select a Unit</h2>
+            <div class="units-grid">
+                <div class="unit-card" onclick="startQuiz(1)">
+                    <div class="unit-number">01</div>
+                    <h3>Cloud Computing</h3>
+                    <p>Characteristics, Benefits, Models</p>
+                    <span class="questions-count">30 Questions</span>
+                </div>
+                <div class="unit-card" onclick="startQuiz(2)">
+                    <div class="unit-number">02</div>
+                    <h3>Virtualization</h3>
+                    <p>Hypervisors, Techniques</p>
+                    <span class="questions-count">30 Questions</span>
+                </div>
+                <div class="unit-card" onclick="startQuiz(3)">
+                    <div class="unit-number">03</div>
+                    <h3>Web Services & Providers</h3>
+                    <p>AWS, Google Cloud, Web Services</p>
+                    <span class="questions-count">30 Questions</span>
+                </div>
+                <div class="unit-card" onclick="startQuiz(4)">
+                    <div class="unit-number">04</div>
+                    <h3>Cloud Security</h3>
+                    <p>Security Challenges, Policies</p>
+                    <span class="questions-count">30 Questions</span>
+                </div>
+                <div class="unit-card" onclick="startQuiz(5)">
+                    <div class="unit-number">05</div>
+                    <h3>Cloud Applications</h3>
+                    <p>Adobe, GitHub, Google Bigtable</p>
+                    <span class="questions-count">30 Questions</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quizScreen" class="screen">
+        <div class="quiz-header">
+            <div class="container">
+                <div class="quiz-info">
+                    <span class="unit-name">Unit 1: Cloud Computing</span>
+                    <span class="question-counter">Question 1 of 30</span>
+                </div>
+                <div class="timer">
+                    <svg class="timer-icon" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                    </svg>
+                    <span id="timer">15:00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-content container">
+            <div class="question-panel">
+                <h3 id="questionText">Which of the following is NOT a characteristic of cloud computing according to NIST?</h3>
+                <div class="options" id="optionsContainer">
+                    <!-- Options will be dynamically inserted -->
+                </div>
+                <div class="navigation-buttons">
+                    <button class="btn btn-secondary" onclick="previousQuestion()">
+                        <span>←</span> Previous
+                    </button>
+                    <button class="btn btn-primary" onclick="nextQuestion()">
+                        Next <span>→</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="question-palette">
+                <h4>Question Palette</h4>
+                <div class="palette-grid" id="paletteGrid">
+                    <!-- Question numbers will be dynamically inserted -->
+                </div>
+                <div class="palette-legend">
+                    <div><span class="legend-dot answered"></span> Answered</div>
+                    <div><span class="legend-dot current"></span> Current</div>
+                    <div><span class="legend-dot unanswered"></span> Not Answered</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-footer">
+            <button class="btn btn-submit" onclick="submitQuiz()">Submit Quiz</button>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="resultsScreen" class="screen">
+        <div class="container results-container">
+            <div class="results-header">
+                <h2>Quiz Completed! 🎉</h2>
+                <div class="score-circle">
+                    <span class="score-value" id="scoreValue">0%</span>
+                    <span class="score-label">Score</span>
+                </div>
+            </div>
+            <div class="results-stats">
+                <div class="stat-card">
+                    <h4>Correct Answers</h4>
+                    <p class="stat-value" id="correctAnswers">0/30</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Time Taken</h4>
+                    <p class="stat-value" id="timeTaken">00:00</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Accuracy</h4>
+                    <p class="stat-value" id="accuracy">0%</p>
+                </div>
+            </div>
+            <div class="results-actions">
+                <button class="btn btn-primary" onclick="reviewAnswers()">Review Answers</button>
+                <button class="btn btn-secondary" onclick="backToHome()">Back to Units</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Disable right-click context menu
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            alert("Right click is disabled on this website.");
+        });
+
+        // ========== JAVASCRIPT CODE ==========
+        let currentUnit = 1;
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+        let timerInterval;
+        let timeRemaining = 900; // 15 minutes in seconds
+
+        // Sample questions database
+        const questionsDatabase = {
+            1: [
+                {id:1,question:"Which is NOT a NIST cloud characteristic?",options:{A:"On-demand self-service",B:"Broad network access",C:"Limited scalability",D:"Measured service"},correct:"C"},
+                {id:2,question:"Which cloud model gives complete infrastructure control?",options:{A:"Public",B:"Private",C:"Community",D:"Hybrid"},correct:"B"},
+                {id:3,question:"Which service provides virtual machines?",options:{A:"SaaS",B:"PaaS",C:"IaaS",D:"XaaS"},correct:"C"},
+                {id:4,question:"Main benefit of resource pooling?",options:{A:"Increased security",B:"Multi-tenant resource allocation",C:"Reduced bandwidth",D:"Eliminates virtualization"},correct:"B"},
+                {id:5,question:"Cloud computing limitation?",options:{A:"Scalability",B:"Cost reduction",C:"Vendor lock-in",D:"Automatic updates"},correct:"C"},
+                {id:6,question:"What does 'elasticity' mean?",options:{A:"Fixed resources",B:"Scale based on demand",C:"Physical flexibility",D:"Network elasticity"},correct:"B"},
+                {id:7,question:"Best model for application developers?",options:{A:"IaaS",B:"PaaS",C:"SaaS",D:"DaaS"},correct:"B"},
+                {id:8,question:"What is hybrid cloud?",options:{A:"Multiple providers",B:"Public + private",C:"Hybrid virtualization",D:"Mixed OS"},correct:"B"},
+                {id:9,question:"Example of SaaS?",options:{A:"Amazon EC2",B:"Azure VMs",C:"Gmail",D:"Docker"},correct:"C"},
+                {id:10,question:"Advantage of measured service?",options:{A:"Free usage",B:"Pay-per-use",C:"Unlimited storage",D:"No monitoring"},correct:"B"},
+                {id:11,question:"Which enables 'pay-as-you-go' pricing?",options:{A:"On-demand",B:"Broad access",C:"Measured service",D:"Resource pooling"},correct:"C"},
+                {id:12,question:"Private cloud advantage?",options:{A:"Lower cost",B:"Greater control",C:"Better scalability",D:"No IT staff needed"},correct:"B"},
+                {id:13,question:"What is 'cloud burst'?",options:{A:"Provider bankruptcy",B:"Public cloud for peak loads",C:"Security breach",D:"Data migration"},correct:"B"},
+                {id:14,question:"Most important provider selection factor?",options:{A:"Lowest price",B:"SLAs",C:"Brand",D:"Data centers"},correct:"B"},
+                {id:15,question:"Purpose of cloud orchestration?",options:{A:"Automate workflows",B:"Create music",C:"Monitor network",D:"Manage identities"},correct:"A"},
+                {id:16,question:"Fundamental cloud technology?",options:{A:"Virtualization",B:"Blockchain",C:"Quantum",D:"Edge"},correct:"A"},
+                {id:17,question:"What is vertical scaling?",options:{A:"Add servers",B:"Increase server capacity",C:"Distribute load",D:"Change provider"},correct:"B"},
+                {id:18,question:"Which provides complete ERP system?",options:{A:"IaaS",B:"PaaS",C:"SaaS",D:"DaaS"},correct:"C"},
+                {id:19,question:"What is CASB purpose?",options:{A:"Improve speed",B:"Enforce security",C:"Reduce costs",D:"Migrate data"},correct:"B"},
+                {id:20,question:"Edge computing characteristic?",options:{A:"Process near source",B:"Higher latency",C:"Less reliable",D:"More expensive"},correct:"A"},
+                {id:21,question:"What is 'cloud sprawl'?",options:{A:"Uncontrolled services",B:"Data center expansion",C:"Provider mergers",D:"Migration challenges"},correct:"A"},
+                {id:22,question:"Critical for cloud disaster recovery?",options:{A:"Regular backups",B:"Geographic distribution",C:"Low-cost storage",D:"High-speed internet"},correct:"B"},
+                {id:23,question:"Serverless computing benefit?",options:{A:"No servers",B:"No infrastructure management",C:"Better performance",D:"Lower security"},correct:"B"},
+                {id:24,question:"Not a cloud deployment model?",options:{A:"Public",B:"Private",C:"Corporate",D:"Hybrid"},correct:"C"},
+                {id:25,question:"What is 'cloud washing'?",options:{A:"Cleaning servers",B:"Rebranding old tech",C:"Migration process",D:"Security scanning"},correct:"B"},
+                {id:26,question:"Key cloud challenge?",options:{A:"Data sovereignty",B:"Limited scalability",C:"High upfront costs",D:"Poor internet"},correct:"A"},
+                {id:27,question:"What is 'lift and shift'?",options:{A:"Move apps unmodified",B:"Server relocation",C:"Data center consolidation",D:"Change providers"},correct:"A"},
+                {id:28,question:"Cloud benefit for business continuity?",options:{A:"Auto updates",B:"Geographic redundancy",C:"Pay-per-use",D:"Self-service"},correct:"B"},
+                {id:29,question:"What is 'warm standby'?",options:{A:"Hours to operational",B:"Duplicate systems",C:"No plan",D:"Manual recovery"},correct:"A"},
+                {id:30,question:"Hybrid cloud advantage?",options:{A:"Lower cost",B:"Workload flexibility",C:"Simpler management",D:"Better performance"},correct:"B"}
+            ],
+            2: [
+                {id:1,question:"What is a hypervisor?",options:{A:"Cloud service",B:"Manages VMs",C:"Network protocol",D:"Security tool"},correct:"B"},
+                {id:2,question:"Which hypervisor runs on bare metal?",options:{A:"Type 1",B:"Type 2",C:"Type 3",D:"Type 4"},correct:"A"},
+                {id:3,question:"What abstracts physical hardware?",options:{A:"VM",B:"Hypervisor",C:"Container",D:"Virtual switch"},correct:"B"},
+                {id:4,question:"Type 1 vs Type 2 difference?",options:{A:"Type 1 on bare metal",B:"Type 1 slower",C:"Type 2 more secure",D:"Type 1 single VM"},correct:"A"},
+                {id:5,question:"Example of Type 1 hypervisor?",options:{A:"VirtualBox",B:"VMware Workstation",C:"Hyper-V",D:"Parallels"},correct:"C"},
+                {id:6,question:"What is 'VM sprawl'?",options:{A:"Rapid deployment",B:"Uncontrolled VMs",C:"Migration",D:"Optimization"},correct:"B"},
+                {id:7,question:"Technology for multiple OS sharing hardware?",options:{A:"Virtualization",B:"Multithreading",C:"Multiprocessing",D:"RAID"},correct:"A"},
+                {id:8,question:"What is 'live migration'?",options:{A:"Move running VM",B:"Upgrade hardware",C:"Physical to virtual",D:"Backup"},correct:"A"},
+                {id:9,question:"Not a virtualization benefit?",options:{A:"Higher utilization",B:"Energy savings",C:"Simplified DR",D:"Eliminates security risks"},correct:"D"},
+                {id:10,question:"What is paravirtualization?",options:{A:"Modified guest OS",B:"No hypervisor",C:"Only storage",D:"Containerization"},correct:"A"},
+                {id:11,question:"What manages CPU allocation?",options:{A:"vCPU scheduler",B:"Hypervisor",C:"Host OS",D:"VM manager"},correct:"B"},
+                {id:12,question:"What is 'ballooning'?",options:{A:"Recover memory",B:"Expand disks",C:"Migrate",D:"Load balance"},correct:"A"},
+                {id:13,question:"Example of containerization?",options:{A:"Docker",B:"Hyper-V",C:"ESXi",D:"Xen"},correct:"A"},
+                {id:14,question:"Main VM vs container difference?",options:{A:"Containers share kernel",B:"VMs more portable",C:"Containers use more resources",D:"VMs start faster"},correct:"A"},
+                {id:15,question:"Which provides hardware isolation?",options:{A:"Full virtualization",B:"Paravirtualization",C:"OS-level",D:"Containerization"},correct:"A"},
+                {id:16,question:"What is 'vMotion'?",options:{A:"Live migration",B:"Networking",C:"Storage",D:"Backup"},correct:"A"},
+                {id:17,question:"Virtualization DR benefit?",options:{A:"Hardware independence",B:"Lower server cost",C:"No backups",D:"Faster internet"},correct:"A"},
+                {id:18,question:"What is 'snapshot'?",options:{A:"Point-in-time copy",B:"Screen capture",C:"Performance metric",D:"Security scan"},correct:"A"},
+                {id:19,question:"Prevents VM escape attacks?",options:{A:"Hypervisor hardening",B:"Network segmentation",C:"Disk encryption",D:"Load balancing"},correct:"A"},
+                {id:20,question:"What is nested virtualization?",options:{A:"Hypervisor in VM",B:"Multiple VMs",C:"Clustering",D:"Storage virtualization"},correct:"A"},
+                {id:21,question:"Example of Type 2 hypervisor?",options:{A:"ESXi",B:"Hyper-V",C:"KVM",D:"VirtualBox"},correct:"D"},
+                {id:22,question:"What is thin provisioning?",options:{A:"Allocate as needed",B:"Reduce memory",C:"Light hypervisor",D:"Minimal config"},correct:"A"},
+                {id:23,question:"What virtualizes network interfaces?",options:{A:"Virtual switch",B:"Hypervisor",C:"Host OS",D:"VM manager"},correct:"A"},
+                {id:24,question:"What is VM templating?",options:{A:"Master images",B:"Documentation",C:"Performance tuning",D:"Security config"},correct:"A"},
+                {id:25,question:"Virtualization disadvantage?",options:{A:"Single point of failure",B:"Higher hardware cost",C:"Complex management",D:"Slower than physical"},correct:"A"},
+                {id:26,question:"Purpose of VMware Tools?",options:{A:"Improve performance",B:"Install hypervisor",C:"Security scan",D:"Networking"},correct:"A"},
+                {id:27,question:"Best performance approach?",options:{A:"Bare-metal",B:"Hosted",C:"Containerization",D:"Paravirtualization"},correct:"A"},
+                {id:28,question:"What is vCPU?",options:{A:"Virtual processor",B:"Virtual console",C:"Virtual cluster",D:"Virtual cache"},correct:"A"},
+                {id:29,question:"What allows GPU access?",options:{A:"GPU passthrough",B:"vGPU",C:"Graphics virtualization",D:"All"},correct:"D"},
+                {id:30,question:"Security best practice?",options:{A:"Regular patching",B:"Same credentials",C:"Disable isolation",D:"Public templates"},correct:"A"}
+            ],
+            3: [
+                {id:1,question:"What does REST stand for?",options:{A:"Remote Execution",B:"Representational State",C:"Resource Efficient",D:"Real-time Service"},correct:"B"},
+                {id:2,question:"AWS virtual servers service?",options:{A:"EC2",B:"S3",C:"Lambda",D:"RDS"},correct:"A"},
+                {id:3,question:"Amazon S3 purpose?",options:{A:"Object storage",B:"Databases",C:"VMs",D:"Content delivery"},correct:"A"},
+                {id:4,question:"Google Cloud equivalent to EC2?",options:{A:"Compute Engine",B:"Cloud Storage",C:"Functions",D:"Cloud SQL"},correct:"A"},
+                {id:5,question:"Azure flagship compute service?",options:{A:"VMs",B:"Blob Storage",C:"Functions",D:"Cosmos DB"},correct:"A"},
+                {id:6,question:"AWS serverless service?",options:{A:"Lambda",B:"EC2",C:"EBS",D:"S3"},correct:"A"},
+                {id:7,question:"CloudFront purpose?",options:{A:"CDN",B:"VPC",C:"Load Balancing",D:"DNS"},correct:"A"},
+                {id:8,question:"Azure object storage?",options:{A:"Blob",B:"Table",C:"File",D:"Queue"},correct:"A"},
+                {id:9,question:"Google serverless service?",options:{A:"Functions",B:"Compute Engine",C:"App Engine",D:"Cloud Run"},correct:"A"},
+                {id:10,question:"AWS relational database?",options:{A:"RDS",B:"DynamoDB",C:"Redshift",D:"ElastiCache"},correct:"A"},
+                {id:11,question:"AWS VPC purpose?",options:{A:"Isolated network",B:"VMs",C:"Object storage",D:"Content delivery"},correct:"A"},
+                {id:12,question:"Google managed Kubernetes?",options:{A:"GKE",B:"Compute Engine",C:"Cloud Run",D:"App Engine"},correct:"A"},
+                {id:13,question:"Azure serverless service?",options:{A:"Functions",B:"VMs",C:"App Service",D:"Container Instances"},correct:"A"},
+                {id:14,question:"AWS NoSQL service?",options:{A:"DynamoDB",B:"RDS",C:"Redshift",D:"ElastiCache"},correct:"A"},
+                {id:15,question:"What is API Gateway?",options:{A:"Manage APIs",B:"Network gateway",C:"Security service",D:"Load balancer"},correct:"A"},
+                {id:16,question:"AWS data warehouse?",options:{A:"Redshift",B:"RDS",C:"DynamoDB",D:"ElastiCache"},correct:"A"},
+                {id:17,question:"Google Cloud SQL is?",options:{A:"Managed RDBMS",B:"NoSQL",C:"Data warehouse",D:"Cache"},correct:"A"},
+                {id:18,question:"Azure equivalent to S3?",options:{A:"Blob Storage",B:"Table Storage",C:"File Storage",D:"Queue Storage"},correct:"A"},
+                {id:19,question:"AWS container service?",options:{A:"ECS",B:"EC2",C:"Lambda",D:"S3"},correct:"A"},
+                {id:20,question:"Google Cloud Storage classes?",options:{A:"Standard, Nearline, Coldline",B:"Basic, Premium",C:"Hot, Cold",D:"Primary, Secondary"},correct:"A"},
+                {id:21,question:"Azure equivalent to EC2?",options:{A:"Virtual Machines",B:"Blob Storage",C:"Functions",D:"Cosmos DB"},correct:"A"},
+                {id:22,question:"AWS Lambda runtime limit?",options:{A:"15 minutes",B:"1 hour",C:"No limit",D:"5 minutes"},correct:"A"},
+                {id:23,question:"Google Cloud load balancer?",options:{A:"Cloud Load Balancing",B:"Compute Engine",C:"Cloud DNS",D:"Cloud CDN"},correct:"A"},
+                {id:24,question:"Azure equivalent to RDS?",options:{A:"Azure SQL",B:"Cosmos DB",C:"Table Storage",D:"Blob Storage"},correct:"A"},
+                {id:25,question:"AWS IAM purpose?",options:{A:"Access management",B:"Monitoring",C:"Networking",D:"Storage"},correct:"A"},
+                {id:26,question:"Google Cloud monitoring?",options:{A:"Operations",B:"Compute Engine",C:"Cloud Logging",D:"Cloud Trace"},correct:"A"},
+                {id:27,question:"Azure equivalent to Lambda?",options:{A:"Functions",B:"Logic Apps",C:"Event Grid",D:"Service Bus"},correct:"A"},
+                {id:28,question:"AWS S3 storage classes?",options:{A:"Standard, IA, Glacier",B:"Basic, Premium",C:"Hot, Cold",D:"Primary, Secondary"},correct:"A"},
+                {id:29,question:"Google Cloud CDN?",options:{A:"Cloud CDN",B:"Load Balancing",C:"Cloud Storage",D:"Compute Engine"},correct:"A"},
+                {id:30,question:"Azure equivalent to DynamoDB?",options:{A:"Cosmos DB",B:"Table Storage",C:"SQL Database",D:"Blob Storage"},correct:"A"}
+            ],
+            4: [
+                {id:1,question:"What is multi-tenancy?",options:{A:"Multiple users sharing",B:"Multiple providers",C:"Multiple security levels",D:"Multiple data centers"},correct:"A"},
+                {id:2,question:"Primary cloud security concern?",options:{A:"Data breaches",B:"Performance",C:"Cost",D:"Latency"},correct:"A"},
+                {id:3,question:"What is encryption at rest?",options:{A:"Encrypt stored data",B:"Encrypt in transit",C:"No encryption",D:"Partial encryption"},correct:"A"},
+                {id:4,question:"IAM best practice?",options:{A:"Least privilege",B:"Shared accounts",C:"No passwords",D:"Single role"},correct:"A"},
+                {id:5,question:"What is DDoS protection?",options:{A:"Prevent overload attacks",B:"Data encryption",C:"Firewall",D:"Virus scan"},correct:"A"},
+                {id:6,question:"Cloud security shared responsibility?",options:{A:"Provider secures infra",B:"Provider does everything",C:"Customer does everything",D:"No responsibility"},correct:"A"},
+                {id:7,question:"What is CASB?",options:{A:"Security policy enforcer",B:"Cloud provider",C:"Network device",D:"Storage system"},correct:"A"},
+                {id:8,question:"Best for cloud data protection?",options:{A:"Encryption",B:"Compression",C:"Duplication",D:"Fragmentation"},correct:"A"},
+                {id:9,question:"What is cloud access control?",options:{A:"Manage permissions",B:"Network speed",C:"Storage capacity",D:"VM performance"},correct:"A"},
+                {id:10,question:"Security benefit of private cloud?",options:{A:"More control",B:"Lower cost",C:"Better scalability",D:"No maintenance"},correct:"A"},
+                {id:11,question:"What is tokenization?",options:{A:"Replace sensitive data",B:"Encrypt everything",C:"No protection",D:"Basic obfuscation"},correct:"A"},
+                {id:12,question:"Cloud security compliance?",options:{A:"Meet regulations",B:"Ignore regulations",C:"Only provider concern",D:"Not important"},correct:"A"},
+                {id:13,question:"What is cloud audit logging?",options:{A:"Track access",B:"Improve speed",C:"Reduce costs",D:"Increase storage"},correct:"A"},
+                {id:14,question:"Best for cloud network security?",options:{A:"VPN",B:"No protection",C:"Shared network",D:"Public IPs"},correct:"A"},
+                {id:15,question:"What is zero trust model?",options:{A:"Verify all access",B:"Trust all",C:"No security",D:"Legacy approach"},correct:"A"},
+                {id:16,question:"Cloud security monitoring tool?",options:{A:"SIEM",B:"Load balancer",C:"CDN",D:"Database"},correct:"A"},
+                {id:17,question:"What is data sovereignty?",options:{A:"Data subject to laws",B:"No regulations",C:"Provider choice",D:"Not important"},correct:"A"},
+                {id:18,question:"Best for cloud key management?",options:{A:"HSM",B:"Plaintext",C:"Shared keys",D:"No encryption"},correct:"A"},
+                {id:19,question:"What is cloud security posture?",options:{A:"Overall security state",B:"Physical location",C:"Network speed",D:"Storage type"},correct:"A"},
+                {id:20,question:"Container security best practice?",options:{A:"Scan images",B:"No scanning",C:"Share containers",D:"Ignore updates"},correct:"A"},
+                {id:21,question:"What is DevSecOps?",options:{A:"Security in DevOps",B:"No security",C:"Only development",D:"Legacy approach"},correct:"A"},
+                {id:22,question:"Cloud penetration testing?",options:{A:"Authorized hacking",B:"No testing",C:"Provider responsibility",D:"Not needed"},correct:"A"},
+                {id:23,question:"What is cloud workload protection?",options:{A:"Secure running apps",B:"Only storage",C:"Ignore security",D:"Network only"},correct:"A"},
+                {id:24,question:"Best for cloud identity management?",options:{A:"SSO",B:"Shared accounts",C:"No auth",D:"Basic passwords"},correct:"A"},
+                {id:25,question:"What is cloud security assessment?",options:{A:"Evaluate risks",B:"Ignore risks",C:"Provider only",D:"Not needed"},correct:"A"},
+                {id:26,question:"Cloud security automation benefit?",options:{A:"Faster response",B:"More errors",C:"Slower",D:"No improvement"},correct:"A"},
+                {id:27,question:"What is security as code?",options:{A:"Define security in code",B:"No security",C:"Manual only",D:"Legacy approach"},correct:"A"},
+                {id:28,question:"Cloud security training importance?",options:{A:"Critical",B:"Not needed",C:"Provider only",D:"Optional"},correct:"A"},
+                {id:29,question:"What is cloud security framework?",options:{A:"Guidelines",B:"No structure",C:"Provider secret",D:"Not important"},correct:"A"},
+                {id:30,question:"Best for cloud incident response?",options:{A:"Plan preparation",B:"No plan",C:"Ignore incidents",D:"Provider only"},correct:"A"}
+            ],
+            5: [
+                {id:1,question:"What is Adobe Firefly?",options:{A:"Cloud storage",B:"AI design tool",C:"Video editor",D:"Project management"},correct:"B"},
+                {id:2,question:"GitHub main purpose?",options:{A:"Code collaboration",B:"File storage",C:"Video hosting",D:"Social media"},correct:"A"},
+                {id:3,question:"Google Bigtable is?",options:{A:"NoSQL database",B:"SQL database",C:"File system",D:"Cache"},correct:"A"},
+                {id:4,question:"Slack is an example of?",options:{A:"Collaboration SaaS",B:"IaaS",C:"PaaS",D:"Storage"},correct:"A"},
+                {id:5,question:"Salesforce is?",options:{A:"CRM SaaS",B:"IaaS",C:"PaaS",D:"Database"},correct:"A"},
+                {id:6,question:"Dropbox is?",options:{A:"File storage SaaS",B:"IaaS",C:"PaaS",D:"Database"},correct:"A"},
+                {id:7,question:"Zoom is?",options:{A:"Video conferencing SaaS",B:"IaaS",C:"PaaS",D:"Storage"},correct:"A"},
+                {id:8,question:"Trello is?",options:{A:"Project management SaaS",B:"IaaS",C:"PaaS",D:"Database"},correct:"A"},
+                {id:9,question:"Google Workspace includes?",options:{A:"Docs, Sheets",B:"Compute Engine",C:"Cloud Storage",D:"Bigtable"},correct:"A"},
+                {id:10,question:"Microsoft 365 is?",options:{A:"Productivity SaaS",B:"IaaS",C:"PaaS",D:"Database"},correct:"A"},
+                {id:11,question:"Atlassian Jira is?",options:{A:"Issue tracking SaaS",B:"IaaS",C:"PaaS",D:"Storage"},correct:"A"},
+                {id:12,question:"ServiceNow is?",options:{A:"ITSM SaaS",B:"IaaS",C:"PaaS",D:"Database"},correct:"A"},
+                {id:13,question:"Workday is?",options:{A:"HR SaaS",B:"IaaS",C:"PaaS",D:"Storage"},correct:"A"},
+                {id:14,question:"Zendesk is?",options:{A:"Customer service SaaS",B:"IaaS",C:"PaaS",D:"Database"},correct:"A"},
+                {id:15,question:"Shopify is?",options:{A:"E-commerce SaaS",B:"IaaS",C:"PaaS",D:"Storage"},correct:"A"},
+                {id:16,question:"QuickBooks Online is?",options:{A:"Accounting SaaS",B:"IaaS",C:"PaaS",D:"Database"},correct:"A"},
+                {id:17,question:"Mailchimp is?",options:{A:"Email marketing SaaS",B:"IaaS",C:"PaaS",D:"Storage"},correct:"A"},
+                {id:18,question:"Canva is?",options:{A:"Design SaaS",B:"IaaS",C:"PaaS",D:"Database"},correct:"A"},
+                {id:19,question:"HubSpot is?",options:{A:"Marketing SaaS",B:"IaaS",C:"PaaS",D:"Storage"},correct:"A"},
+                {id:20,question:"Figma is?",options:{A:"Design collaboration SaaS",B:"IaaS",C:"PaaS",D:"Database"},correct:"A"},
+                {id:21,question:"Notion is?",options:{A:"Workspace SaaS",B:"IaaS",C:"PaaS",D:"Storage"},correct:"A"},
+                {id:22,question:"Airtable is?",options:{A:"Database SaaS",B:"IaaS",C:"PaaS",D:"Storage"},correct:"A"},
+                {id:23,question:"Asana is?",options:{A:"Project management SaaS",B:"IaaS",C:"PaaS",D:"Database"},correct:"A"},
+                {id:24,question:"Monday.com is?",options:{A:"Work OS SaaS",B:"IaaS",C:"PaaS",D:"Storage"},correct:"A"},
+                {id:25,question:"Miro is?",options:{A:"Whiteboard SaaS",B:"IaaS",C:"PaaS",D:"Database"},correct:"A"},
+                {id:26,question:"Loom is?",options:{A:"Video messaging SaaS",B:"IaaS",C:"PaaS",D:"Storage"},correct:"A"},
+                {id:27,question:"Calendly is?",options:{A:"Scheduling SaaS",B:"IaaS",C:"PaaS",D:"Database"},correct:"A"},
+                {id:28,question:"Grammarly is?",options:{A:"Writing assistant SaaS",B:"IaaS",C:"PaaS",D:"Storage"},correct:"A"},
+                {id:29,question:"SurveyMonkey is?",options:{A:"Survey SaaS",B:"IaaS",C:"PaaS",D:"Database"},correct:"A"},
+                {id:30,question:"DocuSign is?",options:{A:"eSignature SaaS",B:"IaaS",C:"PaaS",D:"Storage"},correct:"A"}
+            ]
+        };
+
+        function getUnitName(unitNumber) {
+            const unitNames = {
+                1: "Cloud Computing",
+                2: "Virtualization",
+                3: "Web Services & Providers",
+                4: "Cloud Security",
+                5: "Cloud Applications"
+            };
+            return unitNames[unitNumber];
+        }
+
+        function startQuiz(unitNumber) {
+            currentUnit = unitNumber;
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            timeRemaining = 900;
+            
+            document.getElementById('unitSelection').classList.remove('active');
+            document.getElementById('quizScreen').classList.add('active');
+            
+            document.querySelector('.unit-name').textContent = `Unit ${unitNumber}: ${getUnitName(unitNumber)}`;
+            
+            initializePalette();
+            loadQuestion(0);
+            startTimer();
+        }
+
+        function initializePalette() {
+            const paletteGrid = document.getElementById('paletteGrid');
+            paletteGrid.innerHTML = '';
+            
+            for (let i = 1; i <= 30; i++) {
+                const paletteItem = document.createElement('div');
+                paletteItem.className = 'palette-item unanswered';
+                paletteItem.textContent = i;
+                paletteItem.onclick = () => jumpToQuestion(i - 1);
+                paletteGrid.appendChild(paletteItem);
+            }
+        }
+
+        function loadQuestion(index) {
+            const questions = questionsDatabase[currentUnit];
+            currentQuestionIndex = index;
+            
+            document.querySelector('.question-counter').textContent = `Question ${index + 1} of 30`;
+            
+            let question;
+            if (questions && questions[index]) {
+                question = questions[index];
+            } else {
+                question = {
+                    question: `Demo Question ${index + 1} for Unit ${currentUnit}: This is a sample question about ${getUnitName(currentUnit)}. What is the correct answer?`,
+                    options: {
+                        A: "This is option A - might be correct",
+                        B: "This is option B - could be the answer",
+                        C: "This is option C - possibly right",
+                        D: "This is option D - another choice"
+                    }
+                };
+            }
+            
+            document.getElementById('questionText').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            Object.entries(question.options).forEach(([key, value]) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.innerHTML = `
+                    <span class="option-label">${key}</span>
+                    <span class="option-text">${value}</span>
+                `;
+                optionDiv.onclick = () => selectOption(key, optionDiv);
+                
+                if (userAnswers[index] === key) {
+                    optionDiv.classList.add('selected');
+                }
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            updatePalette();
+        }
+
+        function selectOption(optionKey, optionElement) {
+            userAnswers[currentQuestionIndex] = optionKey;
+            
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            optionElement.classList.add('selected');
+            updatePalette();
+        }
+
+        function updatePalette() {
+            const paletteItems = document.querySelectorAll('.palette-item');
+            
+            paletteItems.forEach((item, index) => {
+                item.classList.remove('answered', 'current', 'unanswered');
+                
+                if (index === currentQuestionIndex) {
+                    item.classList.add('current');
+                } else if (userAnswers[index] !== undefined) {
+                    item.classList.add('answered');
+                } else {
+                    item.classList.add('unanswered');
+                }
+            });
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < 29) {
+                loadQuestion(currentQuestionIndex + 1);
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                loadQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        function jumpToQuestion(index) {
+            loadQuestion(index);
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                const timerDisplay = document.getElementById('timer');
+                
+                timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeRemaining <= 120) {
+                    document.querySelector('.timer').classList.add('warning');
+                }
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            
+            const totalQuestions = 30;
+            const answeredQuestions = Object.keys(userAnswers).length;
+            const questions = questionsDatabase[currentUnit] || [];
+            
+            let correctAnswers = 0;
+            for (let i = 0; i < answeredQuestions && i < questions.length; i++) {
+                if (questions[i] && userAnswers[i] === questions[i].correct) {
+                    correctAnswers++;
+                }
+            }
+            
+            if (questions.length < totalQuestions) {
+                correctAnswers += Math.floor(Math.random() * (answeredQuestions - questions.length) * 0.7);
+            }
+            
+            const score = Math.round((correctAnswers / totalQuestions) * 100);
+            
+            document.getElementById('quizScreen').classList.remove('active');
+            document.getElementById('resultsScreen').classList.add('active');
+            
+            document.getElementById('scoreValue').textContent = `${score}%`;
+            document.getElementById('correctAnswers').textContent = `${correctAnswers}/${totalQuestions}`;
+            
+            const timeTaken = 900 - timeRemaining;
+            const minutesTaken = Math.floor(timeTaken / 60);
+            const secondsTaken = timeTaken % 60;
+            document.getElementById('timeTaken').textContent = `${minutesTaken}:${secondsTaken.toString().padStart(2, '0')}`;
+            
+            const accuracy = answeredQuestions > 0 ? Math.round((correctAnswers / answeredQuestions) * 100) : 0;
+            document.getElementById('accuracy').textContent = `${accuracy}%`;
+        }
+
+        function reviewAnswers() {
+            alert('Review feature coming soon! This will show all questions with correct answers and explanations.');
+        }
+
+        function backToHome() {
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            document.querySelector('.timer').classList.remove('warning');
+            
+            document.getElementById('resultsScreen').classList.remove('active');
+            document.getElementById('unitSelection').classList.add('active');
+        }
+
+        window.addEventListener('beforeunload', function (e) {
+            if (document.getElementById('quizScreen').classList.contains('active')) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    </script>
+
+    <footer style="text-align: center; padding: 20px; background-color: #f0f0f0; color: #333; font-size: 14px;">
+  &copy; 2050 <strong>ABI-TECH</strong>. All rights reserved.
+</footer>
+
+</body>
+</html>
